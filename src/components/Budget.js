@@ -2,16 +2,32 @@ import React, { useContext, useState } from 'react';
 import { AppContext } from '../context/AppContext';
 
 const Budget = () => {
-    const { budget } = useContext(AppContext);
-    const [ newBudget, setNewBudget ] = useState(budget);
+    const { maxBudgetAllowed, budget, totalExpenses, dispatch, currency } = useContext(AppContext);
+    const [inputFieldValue, setInputFieldValue ] = useState(budget);
+
+    const handleBlur = (event) => {
+        let newBudget = event.target.value;
+        if (newBudget < totalExpenses) {
+            alert(`You cannot reduce the budget value lower than the spending ${totalExpenses}`)
+            newBudget = totalExpenses;
+        } else if (newBudget > maxBudgetAllowed) {
+            alert('You cannot set the budget higher than 20,000')
+            newBudget = maxBudgetAllowed
+        }
+        setInputFieldValue(newBudget);
+        dispatch({
+            type: 'SET_BUDGET',
+            payload: newBudget
+        })
+    }
+
     const handleBudgetChange = (event) => {
-        setNewBudget(event.target.value)
+        setInputFieldValue(event.target.value);
     }
     return (
         <div className='alert alert-secondary'>
-            {/* <span>Budget: $ {budget}</span> */}
-            <span>Budget: $</span>
-            <input type="number" step="10" value={newBudget} onChange={handleBudgetChange}></input>
+            <span>Budget: {currency}</span>
+            <input type="number" step="10" value={inputFieldValue} onChange={handleBudgetChange} onBlur={handleBlur} min={totalExpenses}></input>
         </div>
     );
 }
