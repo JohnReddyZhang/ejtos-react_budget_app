@@ -11,7 +11,7 @@ const Budget = () => {
             alert(`You cannot reduce the budget value lower than the spending ${totalExpenses}`)
             newBudget = totalExpenses;
         } else if (newBudget > maxBudgetAllowed) {
-            alert('You cannot set the budget higher than 20,000')
+            alert(`You cannot set the budget higher than ${currency} ${maxBudgetAllowed}`)
             newBudget = maxBudgetAllowed
         }
         setInputFieldValue(newBudget);
@@ -27,7 +27,7 @@ const Budget = () => {
     return (
         <div className='alert alert-secondary'>
             <span>Budget: {currency}</span>
-            <input type="number" step="10" value={inputFieldValue} onChange={handleBudgetChange} onBlur={handleBlur} min={totalExpenses}></input>
+            <input type="number" step="10" value={inputFieldValue} onChange={handleBudgetChange} onBlur={handleBlur}></input>
         </div>
     );
 }
